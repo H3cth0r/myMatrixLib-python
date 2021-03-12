@@ -1,6 +1,17 @@
 # By Héctor Miranda García
 # CALCULATION FUNCTIONS
+from math import radians, sin, cos, pi
 def matrixAddition(matrix_one, matrix_two): # Matrixes args as Lists
+    """
+    This function lets you make a matrix addition.
+    
+    Parameters:
+        matrix_one : matrix as an array
+        matrix_two : matrix as an array
+
+    Return: 
+        matrix : returns an array matrix
+    """
     matrix = []
     if (len(matrix_one) == len(matrix_two)) and (len(matrix_one[0]) == len(matrix_two[0])):
         for i in range(len(matrix_one)):
@@ -10,6 +21,16 @@ def matrixAddition(matrix_one, matrix_two): # Matrixes args as Lists
             matrix.append(row)
     return matrix
 def matrixSubstraction(matrix_one, matrix_two): # Matrixes args as Lists
+    """
+    This function lets you make a matrix substraction.
+
+    Parameters:
+        matrix_one : matrix as an array
+        matrix_two : matrix as an array
+    
+    Return:
+        Matrix : return an array matrix
+    """
     matrix = []
     if (len(matrix_one) == len(matrix_two)) and (len(matrix_one[0]) == len(matrix_two[0])):
         for i in range(len(matrix_one)):
@@ -19,6 +40,16 @@ def matrixSubstraction(matrix_one, matrix_two): # Matrixes args as Lists
             matrix.append(row)
     return matrix
 def matrixScalarProduct(scalar, matrix_one): # Matrixes args as Lists
+    """
+    This function lets you make a matrix scalar product operation:
+
+    Parameters:
+        scalar : float or integer
+        matrix_one : matrix as an array
+
+    Return:
+        Matrix : as an array 
+    """
     matrix = []
     for i in range(len(matrix_one)):
         row = []
@@ -27,6 +58,16 @@ def matrixScalarProduct(scalar, matrix_one): # Matrixes args as Lists
         matrix.append(row)
     return matrix    
 def matrixProduct(matrix_one, matrix_two): # Matrixes args as objects
+    """
+    This function lets you make matrix product operation.
+
+    Parameters:
+        matrix_one : matrix as an array
+        matrix_two : matrix as an array
+    
+    Return:
+        Matrix as an array
+    """
     if len(matrix_one[0]) == len(matrix_two):
         matrix = []
         for i in matrix_one:
@@ -96,6 +137,30 @@ def matrixInverse(matrixList): # Matrix arg as List of the matrix
 def showMatrix(matrix_list):
     for i in matrix_list:
         print("\t", i)
+def matrix_rotation(point, theta):
+    theta = radians(theta)
+    matrix = [[1, 0, 0],[0, cos(theta), -sin(theta)],[0, sin(theta), cos(theta)]]
+    return matrixProduct(matrix, point)
+def point_generation(function, x0, xn, xdata, ydata, zdata, theta=5):
+    for x in range(x0*10, xn*10, 1):
+        x = x/10
+        p = [[x], [function(x)], [0]]
+        for angle in range(0, 360, theta):
+            q = matrix_rotation(p, angle)
+            xdata.append(q[0][0])
+            ydata.append(q[1][0])
+            zdata.append(q[2][0])
+def calculate_volume(function, N):
+    for n in range(1, N):
+        volume = 0
+        a = 1
+        b = 4
+        dx = (b-a)/n
+        for i in range(n):
+            xi = a + (dx*i)
+            volume += function(xi)**2
+        volume *= pi * dx
+    return volume
 class Matrix():
     def __init__(self, name, rows, columns, mlist=[]):
         self.matrix_name = name
